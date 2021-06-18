@@ -9,12 +9,10 @@
 import UIKit
 import SafariServices
 
+@available(iOS 13.0, *)
 class LoginViewController: UIViewController {
 
-    struct Constant {
-        static let cornerRadius:CGFloat = 8.0
-    }
-    
+   
     private let usernameTextField:UITextField = {
         let field = UITextField()
         field.placeholder = "Username or Enail.."
@@ -187,9 +185,29 @@ class LoginViewController: UIViewController {
         
         guard let usernameEmail = usernameTextField.text, !usernameEmail.isEmpty,let password = passwordTextField.text, !password.isEmpty,password.count>=8 else { return }
         
-        //add login Functionality.
+        // add login Functionality.
         print("didTaploginButton")
+        var email:String?
+        var username:String?
         
+        if usernameEmail.contains("@"),usernameEmail.contains("."){
+            email = usernameEmail
+        }else{
+            username = usernameEmail
+        }
+        AuthManager.shared.loginUser(email: email, username: username, password: password) { (succes) in
+            DispatchQueue.main.async {
+                if(succes){
+                    //User Loged In
+                    self.dismiss(animated: true, completion: nil)
+                }else{
+                    // error Occured
+                    let alert = UIAlertController(title: "Log In Error", message: "we were unable to log you in.", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
+                    self.present(alert,animated: true)
+                }
+            }
+        }
     }
     
     @objc func didTaptermsButton(){
@@ -202,20 +220,18 @@ class LoginViewController: UIViewController {
     }
     
     @objc func didTapServicesButton(){
-          print("didTapServicesButton")
-        guard  let url = URL(string: "https://help.instagram.com/519522125107875") else {
-            return
-        }
+        print("didTapServicesButton")
+        guard  let url = URL(string: "https://help.instagram.com/519522125107875") else { return }
         let vc = SFSafariViewController(url: url)
         present(vc, animated: true)
     }
     
     @objc func didTapcreateAccountButton(){
-          print("didTapcreateAccountButton")
+        print("didTapcreateAccountButton")
         let vc = RegistrationViewController()
+        vc.title = "Create Account"
         vc.modalPresentationStyle = .fullScreen
-        present(vc, animated: true)
-        
+        present(UINavigationController(rootViewController: vc), animated: true)
     }
   
     /*
@@ -230,6 +246,7 @@ class LoginViewController: UIViewController {
 
 }
 
+@available(iOS 13.0, *)
 extension LoginViewController:UITextFieldDelegate{
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

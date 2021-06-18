@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 
+@available(iOS 13.0, *)
 class HomeViewController: UIViewController {
 
     override func viewDidLoad() {
@@ -19,11 +20,14 @@ class HomeViewController: UIViewController {
     }
     
     private func UserAuthenticate_Handle(){
-        if(Auth.auth().currentUser == nil){
-           let loginVc = LoginViewController()
+         if(Auth.auth().currentUser == nil){
+            let loginVc = LoginViewController()
             loginVc.modalPresentationStyle = .fullScreen
             present(loginVc,animated: false)
         }
+//        let loginVc = LoginViewController()
+//        loginVc.modalPresentationStyle = .fullScreen
+//        present(loginVc,animated: false)
     }
 
 }
