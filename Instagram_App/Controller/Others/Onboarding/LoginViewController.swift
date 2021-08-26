@@ -220,7 +220,7 @@ class LoginViewController: UIViewController {
     }
     
     @objc func didTapServicesButton(){
-        print("didTapServicesButton")
+        print("didTapServicesButton123")
         guard  let url = URL(string: "https://help.instagram.com/519522125107875") else { return }
         let vc = SFSafariViewController(url: url)
         present(vc, animated: true)

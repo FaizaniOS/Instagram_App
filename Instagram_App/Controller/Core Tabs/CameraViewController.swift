@@ -6,16 +6,19 @@
 //  Copyright © 2021 ZMQ MAC3. All rights reserved.
 //
 
+import AVFoundation
 import UIKit
 
 class CameraViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
+    private func didTapTakePhoto(){
+        
+    }
 
     /*
     // MARK: - Navigation

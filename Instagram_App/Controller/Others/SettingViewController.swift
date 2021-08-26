@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import SafariServices
 
 struct SettingCellModel {
     let title:String
     let handler:(()->Void)
 }
 ///View Controller to show user settings
+@available(iOS 13.0, *)
 final class SettingViewController: UIViewController {
     
     private let tableView:UITableView = {
@@ -37,13 +39,84 @@ final class SettingViewController: UIViewController {
         super.viewDidLayoutSubviews()
         tableView.frame = view.bounds
     }
+    
     private func configureModels(){
-        let section = [SettingCellModel(title: "Log Out"){[weak self ] in
+        //let section =
+        data.append(
+            [SettingCellModel(title: "Edit Profile"){
+                [weak self] in
+                self?.didTapEditProfle()
+                },
+             SettingCellModel(title: "Invite Friends"){
+                [weak self] in
+                self?.didTapInviteFriends()
+                },
+             SettingCellModel(title: "Save Original Posts"){
+                [weak self] in
+                self?.didTapSaveOriginalPosts()
+                }
+        ])
+        
+        
+        data.append(
+            [SettingCellModel(title: "Terms of Services"){[weak self] in
+                self?.openeUrl(type:.terms)
+                },
+             SettingCellModel(title: "Privacy Policy"){[weak self] in
+                self?.openeUrl(type:.privacy)
+                },
+             SettingCellModel(title: "Help / FeedBack"){[weak self]in
+                self?.openeUrl(type:.help)
+                }
+        ])
+        
+        data.append([SettingCellModel(title: "Log Out"){[weak self ] in
             self?.didTapLogOut()
             }
-        ]
-        data.append(section)
+        ])
+        
     }
+    enum SettingUrltype {
+        case terms,privacy,help
+    }
+    
+    private func openeUrl(type:SettingUrltype){
+        let urlString:String
+        
+        switch type {
+        case .terms:
+            urlString = "https://www.instagram.com/about/legal/terms/before-january-19-2013/"
+        case .privacy:
+            urlString = "https://help.instagram.com/519522125107875"
+        case .help:
+            urlString = "https://help.instagram.com/"
+        }
+        
+        guard let url = URL(string: urlString) else {
+            return
+        }
+        
+        let vc = SFSafariViewController(url: url)
+        present(vc,animated: true)
+        
+    }
+    
+    private func didTapEditProfle(){
+        let vc = EditProfileViewController()
+        vc.title = "Edit profile"
+        let newVC = UINavigationController(rootViewController: vc)
+        newVC.modalPresentationStyle = .fullScreen
+        present(newVC,animated: true)
+    }
+    
+    private func didTapInviteFriends(){
+        
+    }
+    
+    private func didTapSaveOriginalPosts(){
+        
+    }
+    
     private func didTapLogOut(){
         
         let actionSheet = UIAlertController(title: "Log Out",
@@ -84,6 +157,7 @@ final class SettingViewController: UIViewController {
     }
     
 }
+@available(iOS 13.0, *)
 extension SettingViewController:UITableViewDelegate,UITableViewDataSource{
     func numberOfSections(in tableView: UITableView) -> Int {
         return data.count
@@ -94,6 +168,7 @@ extension SettingViewController:UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.accessoryType = .disclosureIndicator
         cell.textLabel?.text = data[indexPath.section][indexPath.row].title
         return cell
     }

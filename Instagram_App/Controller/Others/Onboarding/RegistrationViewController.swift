@@ -66,7 +66,7 @@ class RegistrationViewController: UIViewController {
            button.setTitle("Sign Up", for: .normal)
            button.layer.masksToBounds = true
            button.layer.cornerRadius = Constant.cornerRadius
-        button.backgroundColor = .green
+           button.backgroundColor = .green
            button.setTitleColor(.white, for: .normal)
            return button
        }()
@@ -86,6 +86,7 @@ class RegistrationViewController: UIViewController {
         view.addSubview(registerButton)
         
         self.view.backgroundColor = .white
+        
     }
     
     override func viewDidLayoutSubviews() {
@@ -114,7 +115,6 @@ class RegistrationViewController: UIViewController {
                // return
             }
         }
-        
     }
     
     /*
@@ -131,6 +131,7 @@ class RegistrationViewController: UIViewController {
 
 @available(iOS 13.0, *)
 extension RegistrationViewController:UITextFieldDelegate{
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if(textField == usernameField){
             emailField.becomeFirstResponder()
@@ -143,3 +144,5 @@ extension RegistrationViewController:UITextFieldDelegate{
     }
     
 }
+
+
